@@ -8,11 +8,19 @@ def hello_world(request):
     print('Request inbound!')
     return Response('Docker works with Pyramid!')
 
+def health(request):
+    print('Request inbound!')
+    return Response('Health Metrics!')
+
 
 if __name__ == '__main__':
     config = Configurator()
     config.add_route('hello', '/')
     config.add_view(hello_world, route_name='hello')
+
+    config.add_route('health', '/health')
+    config.add_view(health, route_name='health')
+
     app = config.make_wsgi_app()
     server = make_server('0.0.0.0', 6543, app)
     server.serve_forever()
