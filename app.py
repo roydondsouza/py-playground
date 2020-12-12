@@ -12,6 +12,11 @@ def health(request):
     print('Request inbound!')
     return Response('Health Metrics!')
 
+def site_view(request):
+    if request.params.has_key('key'):
+        return Response(request.matchdict['id']+request.params['key'])
+    else:
+        return Response(request.matchdict['id'])
 
 if __name__ == '__main__':
     config = Configurator()
@@ -20,6 +25,9 @@ if __name__ == '__main__':
 
     config.add_route('health', '/health')
     config.add_view(health, route_name='health')
+
+    config.add_route('site_view', '/hello/{id}')
+    config.add_view(site_view, route_name='site_view')
 
     app = config.make_wsgi_app()
     server = make_server('0.0.0.0', 6543, app)
